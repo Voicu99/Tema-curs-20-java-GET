@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recipe Search</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+    }
+    h1 {
+        color: #4CAF50;
+    }
+    form {
+        margin-bottom: 20px;
+    }
+    input, select {
+        padding: 10px;
+        margin-right: 10px;
+    }
+    button {
+        padding: 10px 15px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #45a049;
+    }
+    .results {
+        margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+<h1>Search for Recipes</h1>
+<form id="searchForm" action="/search" method="get">
+  <label for="ingredients">Ingredients:</label>
+  <input type="text" id="ingredients" name="ingredients" placeholder="Enter ingredients" required>
+
+  <label for="dishType">Type of Dish:</label>
+  <select id="dishType" name="dishType">
+    <option value="main course">Main Course</option>
+    <option value="dessert">Dessert</option>
+    <option value="appetizer">Appetizer</option>
+  </select>
+
+  <button type="submit">Search</button>
+</form>
+
+<div class="results" id="results"></div>
+
+<script>
+  const form = document.getElementById('searchForm');
+  const resultsDiv = document.getElementById('results');
+
+  form.onsubmit = async (event) => {
+      event.preventDefault(); // Prevent the default form submission
+
+      const ingredients = document.getElementById('ingredients').value;
+      const dishType = document.getElementById('dishType').value;
+
+      const response = await fetch(`/search?ingredients=${encodeURIComponent(ingredients)}&dishType=${encodeURIComponent(dishType)}`);
+      const data = await response.text();
+      resultsDiv.innerHTML = `<pre>${data}</pre>`; // Display the results
+  };
+</script>
+</body>
+</html>
